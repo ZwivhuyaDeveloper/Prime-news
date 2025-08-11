@@ -3,22 +3,27 @@
 import { useEffect, useMemo, useState } from "react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-
-const SECTIONS = [
-  { id: "hero", label: "Featured" },
-  { id: "breaking", label: "Breaking" },
-  { id: "politics", label: "Politics" },
-  { id: "technology", label: "Technology" },
-  { id: "sports", label: "Sports" },
-  { id: "entertainment", label: "Entertainment" },
-  { id: "business", label: "Business" },
-  { id: "health", label: "Health" },
-  { id: "opinion", label: "Opinion" },
-  { id: "contact", label: "Contact" },
-];
+import { useNews } from "@/hooks/useNews";
 
 export default function StickyNavbar() {
+  const { categorySections, loading } = useNews();
   const [active, setActive] = useState<string>(SECTIONS[0].id);
+
+  // Create sections dynamically from categories
+  const sections = useMemo(() => {
+    const baseSections = [{ id: "hero", label: "Featured" }];
+    
+    if (!loading && categorySections.length > 0) {
+      const categorySectionItems = categorySections.map(section => ({
+        id: section.category.toLowerCase().replace(/\s+/g, '-'),
+        label: section.category
+      }));
+      baseSections.push(...categorySectionItems);
+    }
+    
+    baseSections.push({ id: "contact", label: "Contact" });
+    return baseSections;
+  }, [categorySections, loading]);
 
   useEffect(() => {
     // Only run on client-side
@@ -37,13 +42,11 @@ export default function StickyNavbar() {
       { rootMargin: `-${offset}px 0px -60% 0px`, threshold: [0, 0.2, 0.5, 1] }
     );
 
+  useEffect(() => {
     const elements = SECTIONS.map((s) => document.getElementById(s.id)).filter(Boolean) as Element[];
     elements.forEach((el) => observer.observe(el));
-    
-    return () => {
-      elements.forEach((el) => observer.unobserve(el));
-    };
-  }, []);
+    return () => elements.forEach((el) => observer.unobserve(el));
+  }, [observer]);
 
   const onClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
@@ -56,7 +59,7 @@ export default function StickyNavbar() {
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mt-4 rounded-full border bg-card/80 backdrop-blur supports-[backdrop-filter]:bg-card/60 shadow-sm">
           <ul className="flex items-center justify-between overflow-x-auto p-2">
-            {SECTIONS.map((s) => (
+            {sections.map((s) => (
               <li key={s.id} className="relative px-1">
                 <a
                   href={`#${s.id}`}
