@@ -20,9 +20,12 @@ const SECTIONS = [
 export default function StickyNavbar() {
   const [active, setActive] = useState<string>(SECTIONS[0].id);
 
-  const observer = useMemo(() => {
+  useEffect(() => {
+    // Only run on client-side
+    if (typeof window === 'undefined') return;
+
     const offset = 84; // navbar height offset
-    return new IntersectionObserver(
+    const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
@@ -33,13 +36,14 @@ export default function StickyNavbar() {
       },
       { rootMargin: `-${offset}px 0px -60% 0px`, threshold: [0, 0.2, 0.5, 1] }
     );
-  }, []);
 
-  useEffect(() => {
     const elements = SECTIONS.map((s) => document.getElementById(s.id)).filter(Boolean) as Element[];
     elements.forEach((el) => observer.observe(el));
-    return () => elements.forEach((el) => observer.unobserve(el));
-  }, [observer]);
+    
+    return () => {
+      elements.forEach((el) => observer.unobserve(el));
+    };
+  }, []);
 
   const onClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
