@@ -1,5 +1,3 @@
-
-
 import category from './category'
 import impact from './impact'
 import news from './news'
