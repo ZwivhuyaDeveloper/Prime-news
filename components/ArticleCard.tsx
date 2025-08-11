@@ -27,7 +27,7 @@ export function ArticleCard({ title, excerpt, image, alt, category, date }: Arti
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
           />
           {category && (
-            <span className="absolute left-3 top-3 rounded-full bg-background/80 px-3 py-1 text-xs font-medium text-foreground backdrop-blur">
+            <span className="absolute left-3 top-3 rounded-full bg-background/80 px-3 py-1 text-md font-medium text-foreground backdrop-blur">
               {category}
             </span>
           )}
