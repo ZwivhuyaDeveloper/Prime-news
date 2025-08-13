@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { client } from '@/lib/sanity';
-import { newsQuery, newsByCategoryQuery, categoriesQuery } from '@/lib/queries';
-import { NewsArticle, Category, CategorySection } from '@/lib/types';
+import { client } from '../lib/sanity';
+import { newsQuery, newsByCategoryQuery, categoriesQuery } from '../lib/queries';
+import { NewsArticle, Category, CategorySection } from '../lib/types';
 
 export function useNews() {
   const [articles, setArticles] = useState<NewsArticle[]>([]);

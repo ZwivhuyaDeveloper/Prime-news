@@ -1,5 +1,7 @@
 import { ArticleCard } from "@/components/ArticleCard";
-import { NewsArticle } from "@/lib/types";
+import { NewsArticle } from "../lib/types";
+
+;
 
 interface CategorySectionProps {
   title: string;
