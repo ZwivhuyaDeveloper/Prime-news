@@ -68,7 +68,7 @@ export default function StickyNavbar() {
                     buttonVariants({ variant: "ghost", size: "sm" }),
                     "rounded-full px-3 text-sm font-medium",
                     active === s.id
-                      ? "text-foreground bg-accent/20"
+                      ? "text-foreground bg-zinc-300 selection:bg-zinc-300"
                       : "text-muted-foreground hover:text-foreground"
                   )}
                   aria-current={active === s.id ? "page" : undefined}

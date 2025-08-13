@@ -45,117 +45,108 @@ export default async function FeaturedNews() {
   console.log(data);
 
   return (
-    <div className='flex flex-col bg-white dark:bg-[#0F0F0F]'>
-        <header className='flex flex-row gap-1 items-center justify-between px-2 mt-0 pt-0'>
-          <h1 className='font-bold text-md p-4 flex flex-row gap-2'> 
-            <div className="h-6 w-6 bg-orange-500/20 rounded-full flex items-center justify-center">
-              <PercentDiamond className="text-orange-500" size={16} />
-            </div>
-            <span>Featured News</span>
-          </h1>
-          <span className='text-zinc-500 text-md px-2'>See All</span>
-        </header>
-        <div className='p-3 flex flex-col gap-2 mt-0 pt-0'>
-          {data.map((post, idx) => (
-            <Card key={idx} className='p-3 shadow-none dark:bg-zinc-900/90 bg-zinc-100 gap-2  border-none'>
-              <div className=''>
-                <div className='absolute p-3'>
-                  <Badge className=' text-orange-700 font-medium backdrop-blur-2xl bg-orange-200 border-none'>{post.categoryName}</Badge>
+    <div className="flex flex-col w-full bg-white dark:bg-[#0F0F0F]">
+      <div className='space-y-4 w-full'>
+        {data.map((post, idx) => (
+          <div key={idx} className="w-full p-4 bg-blue-50 border-none dark:bg-[#00FFC2]/10 shadow-xs shadow-zinc-200 dark:shadow-zinc-900 rounded-lg">
+            <div className="flex flex-col w-full md:flex-row gap-6">
+              <div className="md:w-1/2">
+                <div className='absolute p-3 z-10'>
+                  <Badge className="bg-orange-100 text-orange-800 border-orange-200">
+                    {post.categoryName}
+                  </Badge>
                 </div>
-                <div>
+                <div className="relative h-64 w-full">
                   <Image
                     src={urlFor(post.titleImage).url()}
-                    alt="image"
-                    width={500}
-                    height={500}
-                    className="rounded-lg h-[200px] object-cover"
-                  />   
+                    alt={post.title}
+                    fill
+                    className="rounded-lg object-cover shadow-lg"
+                  />
                 </div>
               </div>
-              {/* Impact and Date display */}
-              <div className="justify-between flex flex-row items-center w-full mt-1">
-                <div className="flex flex-row justify-between">
-                  <span className="text-sm text-zinc-800">
-                    {formatDate(post.publishedAt, {
-                      year: 'numeric',
-                      month: 'short',
-                      day: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit'
-                    })}
-                  </span>
+              
+              <div className="md:w-1/2 flex flex-col justify-between">
+                <div>
+                  <Badge className="w-fit mb-3 bg-[#0E76FD] dark:bg-[#00FFC2] text-white dark:text-black">
+                    Featured Story
+                  </Badge>
+                  <Link href={`/article/${post.currentSlug}`} className="hover:text-blue-600 transition-colors">
+                    <h2 className="text-2xl font-bold mb-3 line-clamp-2">{post.title}</h2>
+                  </Link>
+                  <p className="text-gray-600 dark:text-zinc-300 mb-4 line-clamp-3">
+                    {post.smallDescription}
+                  </p>
                 </div>
-                {/* Impact display */}
-                <div className="flex flex-row items-center gap-1 h-fit ">
-                  <h3 className="text-xs font-medium">Impact:</h3>
-                  {post.impacts && post.impacts.length > 0 && (
-                    <div className="flex flex-wrap gap-1">
-                      {post.impacts.map((impact, impactIdx) => (
+
+                <div className='space-y-3'>
+                  <div className='flex flex-row justify-between items-center'>
+                    {/* Date */}
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-zinc-500 dark:text-zinc-400">
+                        {formatDate(post.publishedAt, {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}
+                      </span>
+                    </div>
+
+                    {/* Impact */}
+                    <div className='flex items-center gap-2'>
+                      <h3 className='text-sm font-medium'>Impact:</h3>
+                      {post.impacts && post.impacts.length > 0 && (
+                        <div className="flex gap-1">
+                          {post.impacts.map((impact, impactIdx) => (
+                            <Badge 
+                              key={impactIdx}
+                              className={cn(
+                                "text-xs",
+                                impact.color === 'blue' && "bg-blue-300 text-blue-950 border-blue-200",
+                                impact.color === 'green' && "bg-green-300 text-green-950 border-green-200",
+                                impact.color === 'red' && "bg-red-300 text-red-950 border-red-200",
+                                impact.color === 'yellow' && "bg-yellow-300 text-yellow-950 border-yellow-200",
+                                impact.color === 'purple' && "bg-purple-300 text-purple-950 border-purple-200"
+                              )}
+                            >
+                              <Globe width={10} height={10} strokeWidth={3} className="mr-1"/>
+                              {impact.name}
+                            </Badge>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Tags */}
+                  {post.tags && post.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-2">
+                      {post.tags.map((tag, tagIdx) => (
                         <Badge 
-                          key={impactIdx}
+                          key={tagIdx}
                           className={cn(
                             "text-xs",
-                            impact.color === 'blue' && "bg-blue-100 text-blue-800 border-blue-200",
-                            impact.color === 'green' && "bg-green-100 text-green-800 border-green-200",
-                            impact.color === 'red' && "bg-red-100 text-red-800 border-red-200",
-                            impact.color === 'yellow' && "bg-yellow-100 text-yellow-800 border-yellow-200",
-                            impact.color === 'purple' && "bg-purple-100 text-purple-800 border-purple-200",
+                            tag.color === 'blue' && "bg-blue-300 text-blue-950 border-blue-200",
+                            tag.color === 'green' && "bg-green-300 text-green-950 border-green-200",
+                            tag.color === 'red' && "bg-red-300 text-red-950 border-red-200",
+                            tag.color === 'yellow' && "bg-yellow-300 text-yellow-950 border-yellow-200",
+                            tag.color === 'purple' && "bg-purple-300 text-purple-950 border-purple-200"
                           )}
                         >
-                          <Globe width={8} height={8} strokeWidth={3} className="w-8 h-8"/>
-                          {impact.name}
+                          <Tag width={10} height={10} strokeWidth={3} className="mr-1"/>
+                          {tag.name}
                         </Badge>
                       ))}
                     </div>
                   )}
                 </div>
               </div>
-               <Link href={`/article/${post.currentSlug}`}>
-                  <h3 className="text-md tracking-tight text-start mt-0  text-black dark:text-white font-semibold hover:text-blue-400 dark:hover:text-blue-400">
-                    {post.title}
-                  </h3>
-              </Link>
-              
-              {/* Description with breadcrumbs */}
-              <div className="mb-3 mt-0">
-                <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2 leading-relaxed">
-                  {post.smallDescription}
-                </p>
-                <div className="flex items-center gap-1 mt-1 text-xs text-zinc-500">
-                  <span>Home</span>
-                  <span>•</span>
-                  <span>News</span>
-                  <span>•</span>
-                  <span className="text-orange-600 dark:text-orange-400">{post.categoryName}</span>
-                </div>
-              </div>
-              
-              {/* Tags display */}
-              {post.tags && post.tags.length > 0 && (
-                <div className="flex flex-wrap gap-1 mb-3">
-                  {post.tags.map((tag, tagIdx) => (
-                    <Badge 
-                      key={tagIdx}
-                      className={cn(
-                        "text-xs",
-                        tag.color === 'blue' && "bg-blue-100 text-blue-800 border-blue-200",
-                        tag.color === 'green' && "bg-green-100 text-green-800 border-green-200",
-                        tag.color === 'red' && "bg-red-100 text-red-800 border-red-200",
-                        tag.color === 'yellow' && "bg-yellow-100 text-yellow-800 border-yellow-200",
-                        tag.color === 'purple' && "bg-purple-100 text-purple-800 border-purple-200",
-                      )}
-                    >
-                      <Tag width={8} height={8} strokeWidth={3} className="mr-1"/>
-                      {tag.name}
-                    </Badge>
-                  ))}
-                </div>
-              )}
-
-            </Card>
-          ))}
-        </div>
-
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

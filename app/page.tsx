@@ -4,6 +4,7 @@ import { ArticleCard } from "@/components/ArticleCard";
 import { Button } from "@/components/ui/button";
 import NewsletterForm from "./components/NewsletterForm";
 import Image from "next/image";
+import FeaturedNews from "./components/layout/featured-section";
 
 export default function Page() {
   return (
@@ -11,34 +12,12 @@ export default function Page() {
       <StickyNavbar />
 
       <header id="hero" className="pt-28">
-        <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="relative overflow-hidden rounded-2xl border">
-            <Image
-              src="/images/hero.jpg"
-              width={1920}
-              height={1080}
-              alt="Flux Gazette hero image, editorial collage with gradient glow"
-              className="h-[52vh] w-full object-cover sm:h-[64vh]"
-            />
-            <div className="absolute inset-0 bg-gradient-brand opacity-30" />
-            <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/30 to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-10">
-              <h1 className="font-display text-4xl font-extrabold tracking-tight text-gradient-brand sm:text-5xl md:text-6xl">
-                Flux Gazette
-              </h1>
-              <p className="mt-3 max-w-2xl text-base text-muted-foreground sm:text-lg">
-                A modern digital magazine covering breaking news, politics, technology, sports, entertainment, business, health, and opinion.
-              </p>
-              <div className="mt-6 flex flex-wrap gap-3">
-                <a href="#breaking"><Button className="brand" variant="default" size="lg">Read Latest</Button></a>
-                <a href="#contact" className="inline-flex"><Button variant="outline" size="lg">Subscribe</Button></a>
-              </div>
-            </div>
-          </div>
+        <section className="mx-auto max-w-7xl max-h-[600px] px-4 sm:px-6 lg:px-8 ">
+            <FeaturedNews/>
         </section>
       </header>
 
-      <main>
+      <main>  
         {/* Breaking News */}
         <section id="breaking" className="scroll-mt-24">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
