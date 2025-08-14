@@ -5,9 +5,6 @@ import PoliticsNews from "./components/layout/politics-section";
 import BreakingNews from "./components/layout/breaking-section";
 import TechnologyNews from "./components/layout/technology-section";
 import BusinessNews from "./components/layout/business-section";
-import { Button } from "@/components/ui/button";
-import { width } from 'components/OpenGraphImage';
-import { ChevronDownIcon } from 'lucide-react';
 
 export default function Page() {
   return (
@@ -30,12 +27,8 @@ export default function Page() {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
             <header className="mb-6 flex items-end justify-between">
               <h2 className="font-display text-3xl font-bold">Breaking News</h2>
-              <Button className="bg-orange-500/10 border border-px border-orange-500 text-orange-500 text-sm dark:bg-orange-900 dark:text-white gap-1"> 
-                <span className="">View all</span> 
-                <ChevronDownIcon width={18} height={18}/>
-              </Button>
             </header>
-            <BreakingNews/> 
+            <BreakingNews/>
           </div>
         </section>
 

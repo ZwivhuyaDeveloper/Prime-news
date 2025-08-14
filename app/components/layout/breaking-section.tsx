@@ -3,14 +3,12 @@ import { simpleNewsCard } from '@/app/lib/interface';
 import React from 'react'
 import { client, urlFor } from "@/app/lib/sanity";
 import Image from 'next/image';
-import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { formatDate } from '@/app/lib/dateUtils';
 import { Globe, Tag } from 'lucide-react';
 import { ViewAllDialog } from '@/components/ViewAllDialog';
-import { Button } from '@/components/ui/button';
-import { ChevronDownIcon } from 'lucide-react';
+import Link from 'next/link';
 
 export const revalidate = 30; // revalidate at most 30 seconds
 
@@ -62,9 +60,15 @@ function ArticleList({ articles }: { articles: simpleNewsCard[] }) {
 
 export default async function BreakingNews() {
   const data: simpleNewsCard[] = await getData(5); // Get only 5 articles for the main view
+  const allArticles = await getData(); // Get all articles for the dialog
 
   return (
     <div className="flex flex-col w-full bg-white dark:bg-[#0F0F0F]">
+      <div className="flex justify-end mb-4">
+        <ViewAllDialog category="Breaking">
+          <ArticleList articles={allArticles} />
+        </ViewAllDialog>
+      </div>
       <div className='space-y-4 w-full'>
         {data.map((post, idx) => (
           <div key={idx} className="w-full p-4 bg-blue-50 border-none dark:bg-[#00FFC2]/10 shadow-xs shadow-zinc-200 dark:shadow-zinc-900 rounded-lg">
