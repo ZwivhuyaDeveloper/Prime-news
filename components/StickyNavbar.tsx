@@ -1,19 +1,18 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
+import Link from "next/link";
+import { Newspaper } from "lucide-react";
 
 const SECTIONS = [
   { id: "hero", label: "Featured" },
   { id: "breaking", label: "Breaking" },
   { id: "politics", label: "Politics" },
   { id: "technology", label: "Technology" },
-  { id: "sports", label: "Sports" },
-  { id: "entertainment", label: "Entertainment" },
   { id: "business", label: "Business" },
-  { id: "health", label: "Health" },
-  { id: "opinion", label: "Opinion" },
   { id: "contact", label: "Contact" },
 ];
 
@@ -50,15 +49,29 @@ export default function StickyNavbar() {
 
   const onClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
+    setActive(id);
     const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (el) {
+      window.scrollTo({
+        top: el.offsetTop - 80, // Adjust for header height
+        behavior: "smooth"
+      });
+    }
   };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
-      <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mt-4 rounded-full border bg-card/80 backdrop-blur supports-[backdrop-filter]:bg-card/60 shadow-sm">
-          <ul className="flex items-center justify-between overflow-x-auto p-2">
+      <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 items-center w-fit">
+        <div className="mt-4 rounded-full border border-zinc-200 dark:border-zinc-800  bg-card/80 backdrop-blur items-center px-3 w-full flex flex-row justify-between supports-[backdrop-filter]:bg-card/60 shadow-md">
+
+          <div className="flex items-center w-fit justify-between p-3">
+            <Link href="/" className="flex items-center gap-2">
+              <Newspaper width={28} height={28} strokeWidth={2}  className=" bg-gradient-to-l w-fit h-fit from-orange-500 to-orange-200 rounded-full overflow-hidden text-white p-1"/>
+              <span className="font-bold text-xs sm:text-lg w-full gap-1 flex flex-row"><h1 className="text-orange-500">Prime</h1> <h2 className="dark:text-white text-black">Letter</h2></span>
+            </Link>
+          </div>
+
+          <ul className="flex items-center w-full justify-between overflow-x-auto p-2">
             {SECTIONS.map((s) => (
               <li key={s.id} className="relative px-1">
                 <a
@@ -66,21 +79,30 @@ export default function StickyNavbar() {
                   onClick={(e) => onClick(e, s.id)}
                   className={cn(
                     buttonVariants({ variant: "ghost", size: "sm" }),
-                    "rounded-full px-3 text-sm font-medium",
+                    "rounded-full px-3 text-sm font-medium transition-colors duration-300 ease-in-out",
                     active === s.id
-                      ? "text-foreground bg-zinc-300 selection:bg-zinc-300"
-                      : "text-muted-foreground hover:text-foreground"
+                      ? "text-foreground bg-orange-500/20 selection:bg-orange-500/50"
+                      : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
                   )}
                   aria-current={active === s.id ? "page" : undefined}
                 >
                   {s.label}
                 </a>
-                {active === s.id && (
-                  <span className="pointer-events-none absolute -bottom-1 left-1/2 h-1 w-6 -translate-x-1/2 rounded-full bg-gradient-brand" />
-                )}
+                <span 
+                  className={cn(
+                    "pointer-events-none absolute -bottom-1 left-1/2 h-1 w-6 -translate-x-1/2 rounded-full bg-gradient-brand transition-all duration-300 ease-out",
+                    active === s.id ? "opacity-100 scale-100" : "opacity-0 scale-50"
+                  )}
+                />
               </li>
             ))}
           </ul>
+
+          <div className="flex items-center justify-end gap-2">
+            <Button className="bg-orange-500 text-xs dark:text-white rounded-full p-1 px-2 text-white h-7 w-14">Log In</Button>
+            <Button className="bg-black dark:bg-white text-xs rounded-full p-1 px-2 dark:text-black text-white h-7 w-14">Sign Up</Button>
+          </div>
+
         </div>
       </nav>
     </header>
