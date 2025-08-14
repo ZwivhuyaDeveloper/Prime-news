@@ -8,40 +8,60 @@ import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { formatDate } from '@/app/lib/dateUtils';
 import { Globe, Tag } from 'lucide-react';
-
+import { ViewAllDialog } from '@/components/ViewAllDialog';
+import { Button } from '@/components/ui/button';
+import { ChevronDownIcon } from 'lucide-react';
 
 export const revalidate = 30; // revalidate at most 30 seconds
 
-async function getData() {
+async function getData(limit?: number) {
   const query = `
-  *[_type == 'news' && category->name == "Breaking"] | order(_createdAt desc) {
+  *[_type == 'news' && category->name == "Breaking"] | order(_createdAt desc) ${limit ? `[0...${limit}]` : ''} {
     title,
-      smallDescription,
-      "currentSlug": slug.current,
-      titleImage,
-      "categoryName": category->name,
-      category,
-      publishedAt,
-      tags[]->{
-        name,
-        color
-      },
-      impacts[]->{
-        name,
-        color
-      }
-
+    smallDescription,
+    "currentSlug": slug.current,
+    titleImage,
+    "categoryName": category->name,
+    category,
+    publishedAt,
+    tags[]->{
+      name,
+      color
+    },
+    impacts[]->{
+      name,
+      color
+    }
   }`;
 
   const data = await client.fetch(query);
-
   return data;
 }
 
+function ArticleList({ articles }: { articles: simpleNewsCard[] }) {
+  return (
+    <div className="space-y-6">
+      {articles.map((article) => (
+        <Link 
+          key={article.currentSlug} 
+          href={`/article/${article.currentSlug}`}
+          className="block p-4 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-colors"
+        >
+          <h3 className="text-lg font-medium mb-1">{article.title}</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
+            {article.smallDescription}
+          </p>
+          <div className="mt-2 flex items-center text-xs text-gray-500 dark:text-gray-400">
+            <span>{formatDate(article.publishedAt)}</span>
+          </div>
+        </Link>
+      ))}
+    </div>
+  );
+}
 
 export default async function BreakingNews() {
-  const data: simpleNewsCard[] = await getData()
-  console.log(data);
+  const data: simpleNewsCard[] = await getData(5); // Get only 5 articles for the main view
 
   return (
     <div className="flex flex-col w-full bg-white dark:bg-[#0F0F0F]">

@@ -5,17 +5,24 @@ import PoliticsNews from "./components/layout/politics-section";
 import BreakingNews from "./components/layout/breaking-section";
 import TechnologyNews from "./components/layout/technology-section";
 import BusinessNews from "./components/layout/business-section";
+import { Button } from "@/components/ui/button";
+import { width } from 'components/OpenGraphImage';
+import { ChevronDownIcon } from 'lucide-react';
 
 export default function Page() {
   return (
     <div className="min-h-screen bg-background">
       <StickyNavbar />
-
-      <header id="hero" className="pt-28">
-        <section className="mx-auto max-w-7xl max-h-[600px] px-4 sm:px-6 lg:px-8 ">
+      
+      <section id="hero" className="pt-28 flex flex-col gap-4 w-full mx-auto max-w-7xl max-h-[600px] px-4 sm:px-6 lg:px-8 ">
+        <header className="w-full">
+          <h1 className="font-display text-3xl font-bold">Global News</h1>
+        </header>
+        <div className="w-full">
             <FeaturedNews/>
-        </section>
-      </header>
+        </div>
+      </section>
+      
 
       <main>  
         {/* Breaking News */}
@@ -23,7 +30,10 @@ export default function Page() {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
             <header className="mb-6 flex items-end justify-between">
               <h2 className="font-display text-3xl font-bold">Breaking News</h2>
-              <a href="#" className="story-link text-sm text-muted-foreground">View all</a>
+              <Button className="bg-orange-500/10 border border-px border-orange-500 text-orange-500 text-sm dark:bg-orange-900 dark:text-white gap-1"> 
+                <span className="">View all</span> 
+                <ChevronDownIcon width={18} height={18}/>
+              </Button>
             </header>
             <BreakingNews/> 
           </div>

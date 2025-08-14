@@ -6,6 +6,14 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { Newspaper } from "lucide-react";
+import {
+  ClerkProvider,
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from '@clerk/nextjs'
 
 const SECTIONS = [
   { id: "hero", label: "Featured" },
@@ -67,7 +75,7 @@ export default function StickyNavbar() {
           <div className="flex items-center w-fit justify-between p-3">
             <Link href="/" className="flex items-center gap-2">
               <Newspaper width={28} height={28} strokeWidth={2}  className=" bg-gradient-to-l w-fit h-fit from-orange-500 to-orange-200 rounded-full overflow-hidden text-white p-1"/>
-              <span className="font-bold text-xs sm:text-lg w-full gap-1 flex flex-row"><h1 className="text-orange-500">Prime</h1> <h2 className="dark:text-white text-black">Letter</h2></span>
+              <span className="font-bold text-xs sm:text-lg w-full gap-1 flex flex-row"><h1 className="text-orange-500">Prime</h1> <h2 className="dark:text-white text-black">News</h2></span>
             </Link>
           </div>
 
@@ -98,9 +106,22 @@ export default function StickyNavbar() {
             ))}
           </ul>
 
-          <div className="flex items-center justify-end gap-2">
-            <Button className="bg-orange-500 text-xs dark:text-white rounded-full p-1 px-2 text-white h-7 w-14">Log In</Button>
-            <Button className="bg-black dark:bg-white text-xs rounded-full p-1 px-2 dark:text-black text-white h-7 w-14">Sign Up</Button>
+          <div className="flex items-center w-fit justify-end gap-2">
+          <SignedOut>
+              <SignInButton>
+                <button className="bg-orange-500 text-white rounded-full font-medium w-17  flex items-center justify-center text-xs h-8 px-2 cursor-pointer">
+                  Sign In
+                </button>
+              </SignInButton>
+              <SignUpButton>
+                <button className="bg-[#6c47ff] text-white rounded-full font-medium w-17 flex items-center justify-center text-xs h-8 px-2 cursor-pointer">
+                  Sign Up
+                </button>
+              </SignUpButton>
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
           </div>
 
         </div>
