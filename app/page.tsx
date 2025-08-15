@@ -6,6 +6,7 @@ import BreakingNews from "./components/layout/breaking-section";
 import TechnologyNews from "./components/layout/technology-section";
 import BusinessNews from "./components/layout/business-section";
 import { SectionHeader } from "@/components/SectionHeader";
+import { AnimatedText } from './components/AnimatedHeading';
 
 export default function Page() {
   return (
@@ -16,17 +17,22 @@ export default function Page() {
         <div className="absolute inset-0 -z-10 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-orange-50 to-transparent dark:from-gray-900/80 dark:to-gray-900" />
         </div>
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mb-5">
           <div className="text-center">
-            <h1 className="bg-gradient-to-r from-orange-500 to-pink-600 bg-clip-text text-4xl font-extrabold tracking-tight text-transparent sm:text-5xl md:text-6xl">
-              Global News Network
-            </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-600 dark:text-gray-300">
-              Stay informed with the latest breaking news, politics, technology, and business updates from around the world.
-            </p>
+            <AnimatedText 
+              as="h1"
+              text="Global News Network"
+              className="bg-gradient-to-r from-orange-500 to-pink-600 bg-clip-text text-4xl font-extrabold tracking-tight text-transparent sm:text-5xl md:text-6xl block"
+            />
+            <AnimatedText 
+              as="p"
+              text="Stay informed with the latest breaking news, politics, technology, and business updates from around the world."
+              className="mx-auto mt-6 max-w-2xl text-lg text-gray-600 dark:text-gray-300"
+              delay={100}
+            />
           </div>
         </div>
-        <div className="w-[800px] justify-center flex items-center">
+        <div className="container max-w-5xl mx-auto px-4">
             <FeaturedNews/>
         </div>
       </section>
