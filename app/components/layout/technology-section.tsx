@@ -34,9 +34,9 @@ async function getData(limit?: number) {
   return data;
 }
 
-function ArticleList({ articles }: { articles: simpleNewsCard[] }) {
+function ArticleList({ articles, isDialog = false }: { articles: simpleNewsCard[], isDialog?: boolean }) {
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div className={`grid gap-6 ${isDialog ? 'grid-cols-1' : 'md:grid-cols-2 lg:grid-cols-3'}`}>
       {articles.map((article) => (
         <Link 
           key={article.currentSlug} 
@@ -125,7 +125,7 @@ export default async function TechnologyNews() {
           buttonText="View All" 
           buttonClassName="inline-flex items-center justify-center rounded-lg border border-purple-500 bg-purple-500/10 px-4 py-2 text-sm font-medium text-purple-600 transition-all hover:bg-purple-500/20 hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 dark:bg-purple-900/30 dark:text-purple-400 dark:hover:bg-purple-900/50"
         >
-          <ArticleList articles={allArticles} />
+          <ArticleList articles={allArticles} isDialog={true} />
         </ViewAllDialog>
       </div>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

@@ -35,8 +35,8 @@ export function ViewAllDialog({
       </Button>
       
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-4xl overflow-hidden rounded-2xl p-0 bg-white dark:bg-gray-900">
-          <div className="relative">
+        <DialogContent className="max-w-4xl h-[90vh] flex flex-col p-0 bg-white dark:bg-gray-900">
+          <div className="flex flex-col h-full">
             {/* Header */}
             <div className="sticky top-0 z-10 border-b border-gray-200 bg-white dark:bg-gray-900 dark:border-gray-800 px-6 py-4">
               <div className="flex items-center justify-between">
@@ -55,9 +55,9 @@ export function ViewAllDialog({
                   <span className="sr-only">Close</span>
                 </Button>
               </div>
-              
-              <div className="mt-3 flex items-center">
-                <span className="text-sm text-gray-500 dark:text-gray-400">
+
+              <div className="mt-2 flex items-center text-sm text-gray-500 dark:text-gray-400">
+                <span className="font-medium">
                   {React.Children.count(children)} articles
                 </span>
                 <div className="mx-3 h-4 w-px bg-gray-200 dark:bg-gray-700"></div>
@@ -68,25 +68,40 @@ export function ViewAllDialog({
             </div>
 
             {/* Content area */}
-            <div className="max-h-[70vh] overflow-y-auto">
-              <div className="divide-y divide-gray-200 dark:divide-gray-800">
+            <div className="flex-1 overflow-y-auto p-6">
+              <div className="space-y-6">
                 {children}
               </div>
             </div>
             
             {/* Footer */}
-            <div className="sticky bottom-0 border-t border-gray-200 bg-white px-6 py-3 dark:border-gray-800 dark:bg-gray-900">
-              <div className="flex items-center justify-between">
-                <div className="text-sm text-gray-500 dark:text-gray-400">
-                  Showing all {React.Children.count(children)} articles
+            <div className="sticky bottom-0 bg-white/80 backdrop-blur-sm border-t border-gray-200 dark:border-gray-800 dark:bg-gray-900/80">
+              <div className="px-6 py-3">
+                <div className="flex items-center justify-between">
+                  <div className="text-sm text-gray-500 dark:text-gray-400">
+                    Showing <span className="font-medium text-gray-700 dark:text-gray-200">{React.Children.count(children)}</span> articles
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <Button
+                      onClick={() => {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
+                      variant="ghost"
+                      size="sm"
+                      className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                    >
+                      Back to top
+                    </Button>
+                    <Button
+                      onClick={() => setOpen(false)}
+                      variant="outline"
+                      size="sm"
+                      className="border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
+                    >
+                      Close
+                    </Button>
+                  </div>
                 </div>
-                <Button
-                  onClick={() => setOpen(false)}
-                  variant="outline"
-                  className="border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
-                >
-                  Close
-                </Button>
               </div>
             </div>
           </div>
