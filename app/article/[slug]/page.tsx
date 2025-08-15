@@ -1,31 +1,33 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { client } from "@/app/lib/sanity";
 import { urlFor } from "@/app/lib/sanityImageUrl";
 import { PortableText } from "@portabletext/react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
-type Props = {
-  params: { slug: string }
-  searchParams: { [key: string]: string | string[] | undefined }
-}
-
 export const revalidate = 30; // Revalidate every 30 seconds
 
-interface NewsArticle {
-  title: string;
-  content: any;
-  titleImage: any;
-  publishedAt: string;
-  author: {
-    name: string;
-    avatar: any;
-    role: string;
+export async function generateMetadata({
+  params: { slug },
+}: {
+  params: { slug: string };
+}) {
+  // Fetch article data to use in metadata
+  const article = await client.fetch(
+    `*[_type == 'news' && slug.current == $slug][0] { title, smallDescription }`,
+    { slug }
+  );
+
+  return {
+    title: article?.title || 'Article',
+    description: article?.smallDescription || 'Article page',
   };
-  categoryName: string;
 }
 
-export default async function NewsArticle({ params }: Props) {
+export default async function NewsArticle({
+  params,
+}: {
+  params: { slug: string };
+}) {
   const query = `
     *[_type == 'news' && slug.current == $slug][0] {
       title,
@@ -41,7 +43,7 @@ export default async function NewsArticle({ params }: Props) {
     }
   `;
 
-  const article: NewsArticle = await client.fetch(query, { slug: params.slug });
+  const article = await client.fetch(query, { slug: params.slug });
 
   if (!article) {
     return notFound();
