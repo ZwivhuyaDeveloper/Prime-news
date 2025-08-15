@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { buttonVariants } from "@/components/ui/button";
+import { useEffect, useMemo, useState, useRef } from "react";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { Newspaper } from "lucide-react";
+import { Newspaper, Menu, X } from "lucide-react";
 import {
   SignInButton,
   SignUpButton,
@@ -12,7 +12,7 @@ import {
   SignedOut,
   UserButton,
 } from '@clerk/nextjs';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 
 const SECTIONS = [
@@ -26,7 +26,28 @@ const SECTIONS = [
 
 export default function StickyNavbar() {
   const [active, setActive] = useState<string>('');
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const pathname = usePathname();
+  const navRef = useRef<HTMLDivElement>(null);
+
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  // Close mobile menu when navigating
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
 
   const observer = useMemo(() => {
     if (typeof window === "undefined") return null;
@@ -60,7 +81,6 @@ export default function StickyNavbar() {
     const element = document.getElementById(id);
     if (element) {
       setActive(id);
-      // Use smooth scrolling with offset for the navbar
       const offset = 80; // Adjust this value based on your navbar height
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - offset;
@@ -104,9 +124,9 @@ export default function StickyNavbar() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
-      <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 items-center w-fit">
+      <nav ref={navRef} className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 items-center w-full">
         <div className="mt-4 rounded-full border border-zinc-200 dark:border-zinc-800 bg-card/80 backdrop-blur items-center px-3 w-full flex flex-row justify-between supports-[backdrop-filter]:bg-card/60 shadow-md">
-
+          {/* Logo */}
           <motion.div 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -150,57 +170,97 @@ export default function StickyNavbar() {
             </Link>
           </motion.div>
 
-          <motion.ul 
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="flex items-center w-full justify-between overflow-x-auto p-2"
-          >
-            {SECTIONS.map((s, index) => (
-              <motion.li 
-                key={s.id} 
-                className="relative px-1"
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: 0.4 + (index * 0.05) }}
-              >
-                <motion.a
-                  href={`#${s.id}`}
-                  onClick={(e) => onClick(e, s.id)}
-                  className={cn(
-                    buttonVariants({ variant: "ghost", size: "sm" }),
-                    "rounded-full px-3 text-sm font-medium transition-colors duration-300 ease-in-out relative overflow-hidden group"
-                  )}
-                  whileHover={{ 
-                    scale: 1.05, 
-                    backgroundColor: 'rgba(249, 115, 22, 0.1)',
-                    transition: { duration: 0.2 }
-                  }}
-                  whileTap={{ 
-                    scale: 0.98,
-                    transition: { duration: 0.1 }
-                  }}
-                  animate={{
-                    color: active === s.id ? 'hsl(240, 10%, 3.9%)' : 'hsl(240, 3.8%, 46.1%)',
-                    backgroundColor: active === s.id ? 'rgba(249, 115, 22, 0.2)' : 'transparent'
-                  }}
-                  aria-current={active === s.id ? "page" : undefined}
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center">
+            <motion.ul 
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="flex items-center justify-between p-2"
+            >
+              {SECTIONS.map((s, index) => (
+                <motion.li 
+                  key={s.id} 
+                  className="relative px-1"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: 0.4 + (index * 0.05) }}
                 >
-                  {s.label}
-                </motion.a>
-                <motion.span 
-                  className="pointer-events-none absolute -bottom-1 left-1/2 h-1 w-6 -translate-x-1/2 rounded-full bg-gradient-to-r from-orange-500 to-pink-500"
-                  initial={false}
-                  animate={{
-                    opacity: active === s.id ? 1 : 0,
-                    scale: active === s.id ? 1 : 0.5,
-                  }}
-                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                />
-              </motion.li>
-            ))}
-          </motion.ul>
+                  <motion.a
+                    href={`#${s.id}`}
+                    onClick={(e) => onClick(e, s.id)}
+                    className={cn(
+                      buttonVariants({ variant: "ghost", size: "sm" }),
+                      "rounded-full px-3 text-sm font-medium transition-colors duration-300 ease-in-out relative overflow-hidden group"
+                    )}
+                    whileHover={{ 
+                      scale: 1.05, 
+                      backgroundColor: 'rgba(249, 115, 22, 0.1)',
+                      transition: { duration: 0.2 }
+                    }}
+                    whileTap={{ 
+                      scale: 0.98,
+                      transition: { duration: 0.1 }
+                    }}
+                    animate={{
+                      color: active === s.id ? 'hsl(240, 10%, 3.9%)' : 'hsl(240, 3.8%, 46.1%)',
+                      backgroundColor: active === s.id ? 'rgba(249, 115, 22, 0.2)' : 'transparent'
+                    }}
+                    aria-current={active === s.id ? "page" : undefined}
+                  >
+                    {s.label}
+                  </motion.a>
+                  <motion.span 
+                    className="pointer-events-none absolute -bottom-1 left-1/2 h-1 w-6 -translate-x-1/2 rounded-full bg-gradient-to-r from-orange-500 to-pink-500"
+                    initial={false}
+                    animate={{
+                      opacity: active === s.id ? 1 : 0,
+                      scale: active === s.id ? 1 : 0.5,
+                    }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                  />
+                </motion.li>
+              ))}
+            </motion.ul>
+          </div>
 
+          {/* Mobile Navigation */}
+          <AnimatePresence>
+            {isOpen && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3 }}
+                className="md:hidden absolute top-full left-0 right-0 bg-card border-b border-zinc-200 dark:border-zinc-800 overflow-hidden"
+              >
+                <motion.ul className="px-4 py-2 space-y-2">
+                  {SECTIONS.map((s) => (
+                    <motion.li key={s.id} className="w-full">
+                      <motion.a
+                        href={`#${s.id}`}
+                        onClick={(e) => {
+                          onClick(e, s.id);
+                          setIsOpen(false);
+                        }}
+                        className={cn(
+                          buttonVariants({ variant: "ghost", size: "sm" }),
+                          "w-full text-left px-4 py-2 text-base font-medium rounded-md transition-colors duration-300",
+                          active === s.id 
+                            ? "bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400"
+                            : "text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+                        )}
+                      >
+                        {s.label}
+                      </motion.a>
+                    </motion.li>
+                  ))}
+                </motion.ul>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Auth Buttons */}
           <motion.div 
             className="flex items-center w-fit justify-end gap-2"
             initial={{ opacity: 0, x: 20 }}
@@ -241,6 +301,22 @@ export default function StickyNavbar() {
             </SignedIn>
           </motion.div>
 
+          {/* Mobile menu button */}
+          <div className="md:hidden flex items-center">
+            <Button
+              onClick={() => setIsOpen(!isOpen)}
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 dark:text-gray-200 hover:text-orange-500 focus:outline-none"
+              aria-expanded={isOpen}
+              aria-label={isOpen ? 'Close menu' : 'Open menu'}
+            >
+              <span className="sr-only">Open main menu</span>
+              {isOpen ? (
+                <X className="block h-6 w-6" aria-hidden="true" />
+              ) : (
+                <Menu className="block h-6 w-6" aria-hidden="true" />
+              )}
+            </Button>
+          </div>
         </div>
       </nav>
     </header>

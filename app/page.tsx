@@ -13,7 +13,7 @@ export default function Page() {
     <div className="min-h-screen bg-background">
       <StickyNavbar />
       
-      <section id="hero" className="relative pt-32 justify-center pb-16 sm:pt-40 sm:pb-24">
+      <section id="hero" className="relative pt-32 justify-center pb-16 sm:pt-40 sm:pb-10">
         <div className="absolute inset-0 -z-10 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-orange-50 to-transparent dark:from-gray-900/80 dark:to-gray-900" />
         </div>

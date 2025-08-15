@@ -38,66 +38,56 @@ async function getData(limit?: number) {
 
 function ArticleList({ articles }: { articles: simpleNewsCard[] }) {
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div className="space-y-2">
       {articles.map((article) => (
         <Link 
           key={article.currentSlug} 
           href={`/article/${article.currentSlug}`}
-          className="group relative overflow-hidden rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+          className="group flex items-center gap-4 rounded-lg border border-gray-200 p-3 transition-colors hover:bg-gray-50 dark:border-gray-800 dark:hover:bg-gray-800/50"
         >
-          <div className="relative h-48 w-full">
+          <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-md">
             <Image
               src={urlFor(article.titleImage).url()}
               alt={article.title}
               fill
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              className="object-cover"
             />
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
-              <Badge className="mb-2 bg-white/90 text-gray-900 hover:bg-white">
+          </div>
+          
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2">
+              <Badge variant="outline" className="text-xs">
                 {article.categoryName}
               </Badge>
-              <h3 className="text-lg font-semibold text-white line-clamp-2">{article.title}</h3>
+              <span className="truncate text-sm font-medium text-gray-900 dark:text-white">
+                {article.title}
+              </span>
+            </div>
+            
+            <div className="mt-1 flex flex-wrap items-center gap-1">
+              {article.impacts?.slice(0, 3).map((impact, idx) => (
+                <span 
+                  key={idx}
+                  className={`inline-flex items-center rounded-full border px-2 py-0.5 text-xs ${
+                    impact.color === 'red' ? 'border-red-200 bg-red-50 text-red-800 dark:border-red-900 dark:bg-red-900/30 dark:text-red-200' :
+                    impact.color === 'blue' ? 'border-blue-200 bg-blue-50 text-blue-800 dark:border-blue-900 dark:bg-blue-900/30 dark:text-blue-200' :
+                    impact.color === 'green' ? 'border-green-200 bg-green-50 text-green-800 dark:border-green-900 dark:bg-green-900/30 dark:text-green-200' :
+                    'border-gray-200 bg-gray-50 text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200'
+                  }`}
+                >
+                  {impact.name}
+                </span>
+              ))}
+              {article.impacts?.length > 3 && (
+                <span className="text-xs text-gray-500 dark:text-gray-400">
+                  +{article.impacts.length - 3} more
+                </span>
+              )}
             </div>
           </div>
-          <div className="p-4">
-            <p className="mb-3 text-sm text-gray-600 dark:text-gray-300 line-clamp-3">
-              {article.smallDescription}
-            </p>
-            <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
-              <span>{formatDate(article.publishedAt)}</span>
-              <div className="flex space-x-1">
-                {article.impacts?.slice(0, 2).map((impact, idx) => {
-                  // Map color names to Tailwind classes
-                  const colorMap: Record<string, string> = {
-                    red: 'bg-red-100 text-red-800 border-red-200',
-                    blue: 'bg-blue-100 text-blue-800 border-blue-200',
-                    green: 'bg-green-100 text-green-800 border-green-200',
-                    yellow: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-                    purple: 'bg-purple-100 text-purple-800 border-purple-200',
-                    pink: 'bg-pink-100 text-pink-800 border-pink-200',
-                    indigo: 'bg-indigo-100 text-indigo-800 border-indigo-200',
-                    // Add more colors as needed
-                  };
-                  
-                  // Default to gray if color not in map
-                  const colorClass = colorMap[impact.color.toLowerCase()] || 'bg-gray-100 text-gray-800 border-gray-200';
-                  
-                  return (
-                    <span 
-                      key={idx}
-                      className={`inline-flex h-5 items-center rounded-full border px-2 text-xs font-medium ${colorClass}`}
-                    >
-                      {impact.name}
-                    </span>
-                  );
-                })}
-                {article.impacts?.length > 2 && (
-                  <span className="flex h-5 items-center rounded-full bg-gray-100 px-2 text-xs text-gray-500 dark:bg-gray-800 dark:text-gray-400">
-                    +{article.impacts.length - 2}
-                  </span>
-                )}
-              </div>
-            </div>
+          
+          <div className="flex-shrink-0 text-xs text-gray-500 dark:text-gray-400">
+            {formatDate(article.publishedAt, { month: 'short', day: 'numeric' })}
           </div>
         </Link>
       ))}
