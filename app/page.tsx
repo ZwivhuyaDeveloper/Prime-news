@@ -27,7 +27,7 @@ export default function Page() {
             <AnimatedText 
               as="p"
               text="Stay informed with the latest breaking news, politics, technology, and business updates from around the world."
-              className="mx-auto mt-6 max-w-2xl text-lg text-gray-600 dark:text-gray-300"
+              className="mx-auto mt-6 max-w-2xl text-lg font-medium text-gray-600 dark:text-gray-300"
               delay={100}
             />
           </div>

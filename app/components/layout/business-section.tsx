@@ -103,7 +103,7 @@ function ArticleList({ articles }: { articles: simpleNewsCard[] }) {
 }
 
 export default async function BusinessNews() {
-  const data: simpleNewsCard[] = await getData(3);
+  const data: simpleNewsCard[] = await getData(6);
   const allArticles = await getData();
   console.log(data);
 
@@ -117,6 +117,7 @@ export default async function BusinessNews() {
         <ViewAllDialog 
           category="Business" 
           buttonText="View All" 
+          articleCount={allArticles.length}
           buttonClassName="inline-flex items-center justify-center rounded-lg border border-green-500 bg-green-500/10 px-4 py-2 text-sm font-medium text-green-600 transition-all hover:bg-green-500/20 hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:bg-green-900/30 dark:text-green-400 dark:hover:bg-green-900/50"
         >
           <ArticleList articles={allArticles} />

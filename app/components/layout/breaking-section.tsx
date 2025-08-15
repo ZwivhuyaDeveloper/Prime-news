@@ -101,7 +101,7 @@ function ArticleList({ articles, isDialog = false }: { articles: simpleNewsCard[
 }
 
 export default async function BreakingNews() {
-  const data: simpleNewsCard[] = await getData(3);
+  const data: simpleNewsCard[] = await getData(6);
   const allArticles = await getData();
 
   return (
@@ -116,6 +116,7 @@ export default async function BreakingNews() {
             <ViewAllDialog 
               category="Breaking" 
               buttonText="View All" 
+              articleCount={allArticles.length}
               buttonClassName="inline-flex items-center justify-center rounded-lg border border-orange-500 bg-orange-500/10 px-4 py-2 text-sm font-medium text-orange-600 transition-all hover:bg-orange-500/20 hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:bg-orange-900/30 dark:text-orange-400 dark:hover:bg-orange-900/50"
             >
               <ArticleList articles={allArticles} isDialog={true} />
