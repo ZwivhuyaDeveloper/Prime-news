@@ -38,19 +38,66 @@ async function getData(limit?: number) {
 
 function ArticleList({ articles }: { articles: simpleNewsCard[] }) {
   return (
-    <div className="space-y-6">
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       {articles.map((article) => (
         <Link 
           key={article.currentSlug} 
           href={`/article/${article.currentSlug}`}
-          className="block p-4 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-colors"
+          className="group relative overflow-hidden rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
         >
-          <h3 className="text-lg font-medium mb-1">{article.title}</h3>
-          <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
-            {article.smallDescription}
-          </p>
-          <div className="mt-2 flex items-center text-xs text-gray-500 dark:text-gray-400">
-            <span>{formatDate(article.publishedAt)}</span>
+          <div className="relative h-48 w-full">
+            <Image
+              src={urlFor(article.titleImage).url()}
+              alt={article.title}
+              fill
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+              <Badge className="mb-2 bg-white/90 text-gray-900 hover:bg-white">
+                {article.categoryName}
+              </Badge>
+              <h3 className="text-lg font-semibold text-white line-clamp-2">{article.title}</h3>
+            </div>
+          </div>
+          <div className="p-4">
+            <p className="mb-3 text-sm text-gray-600 dark:text-gray-300 line-clamp-3">
+              {article.smallDescription}
+            </p>
+            <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+              <span>{formatDate(article.publishedAt)}</span>
+              <div className="flex space-x-1">
+                {article.impacts?.slice(0, 2).map((impact, idx) => {
+                  // Map color names to Tailwind classes
+                  const colorMap: Record<string, string> = {
+                    red: 'bg-red-100 text-red-800 border-red-200',
+                    blue: 'bg-blue-100 text-blue-800 border-blue-200',
+                    green: 'bg-green-100 text-green-800 border-green-200',
+                    yellow: 'bg-yellow-100 text-yellow-800 border-yellow-200',
+                    purple: 'bg-purple-100 text-purple-800 border-purple-200',
+                    pink: 'bg-pink-100 text-pink-800 border-pink-200',
+                    indigo: 'bg-indigo-100 text-indigo-800 border-indigo-200',
+                    // Add more colors as needed
+                  };
+                  
+                  // Default to gray if color not in map
+                  const colorClass = colorMap[impact.color.toLowerCase()] || 'bg-gray-100 text-gray-800 border-gray-200';
+                  
+                  return (
+                    <span 
+                      key={idx}
+                      className={`inline-flex h-5 items-center rounded-full border px-2 text-xs font-medium ${colorClass}`}
+                    >
+                      {impact.name}
+                    </span>
+                  );
+                })}
+                {article.impacts?.length > 2 && (
+                  <span className="flex h-5 items-center rounded-full bg-gray-100 px-2 text-xs text-gray-500 dark:bg-gray-800 dark:text-gray-400">
+                    +{article.impacts.length - 2}
+                  </span>
+                )}
+              </div>
+            </div>
           </div>
         </Link>
       ))}
@@ -63,9 +110,17 @@ export default async function BreakingNews() {
   const allArticles = await getData(); // Get all articles for the dialog
 
   return (
-    <div className="flex flex-col w-full bg-white dark:bg-[#0F0F0F]">
-      <div className="flex justify-end mb-4">
-        <ViewAllDialog category="Breaking">
+    <div className="w-full bg-white dark:bg-[#0F0F0F] rounded-2xl p-6 shadow-sm">
+      <div className="mb-6 flex items-center justify-between">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white md:text-3xl">
+          Breaking News
+          <span className="ml-3 inline-block h-1.5 w-8 rounded-full bg-orange-500"></span>
+        </h2>
+        <ViewAllDialog 
+          category="Breaking" 
+          buttonText="View All" 
+          buttonClassName="inline-flex items-center justify-center rounded-lg border border-orange-500 bg-orange-500/10 px-4 py-2 text-sm font-medium text-orange-600 transition-all hover:bg-orange-500/20 hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:bg-orange-900/30 dark:text-orange-400 dark:hover:bg-orange-900/50"
+        >
           <ArticleList articles={allArticles} />
         </ViewAllDialog>
       </div>
