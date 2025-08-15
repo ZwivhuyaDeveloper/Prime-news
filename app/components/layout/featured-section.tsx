@@ -4,9 +4,8 @@ import React from 'react'
 import { client, urlFor } from "@/app/lib/sanity";
 import Image from 'next/image';
 import Link from 'next/link';
-import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { PercentDiamond, Tag, Globe } from 'lucide-react';
+import { Tag, Globe } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { formatDate } from '@/app/lib/dateUtils';
 

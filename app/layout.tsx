@@ -8,11 +8,11 @@ const display = Playfair_Display({ subsets: ["latin"], weight: ["400", "600", "7
 const inter = Inter({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700", "800"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  title: "Flux Gazette — Modern Digital Magazine",
-  description: "Premium single-page digital magazine: breaking news, politics, technology, sports, business, health, opinion and more.",
-  applicationName: "Flux Gazette",
+  title: "Prime News — Modern Digital Magazine",
+  description: "Premium single-page digital site: breaking news, politics, technology, sports, business, health, opinion and more.",
+  applicationName: "Prime News",
   openGraph: {
-    title: "Flux Gazette — Modern Digital Magazine",
+    title: "Prime News — Modern Digital Magazine",
     description: "Premium single-page digital magazine covering world, politics, tech and culture.",
     type: "website",
     images: [
@@ -21,8 +21,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Flux Gazette — Modern Digital Magazine",
-    description: "Premium single-page digital magazine covering world, politics, tech and culture.",
+    title: "Prime News — Modern Digital Magazine",
+    description: "Premium single-page digital news site covering world, politics, tech and culture.",
     images: ["/images/hero.jpg"],
   },
   alternates: { canonical: "/" },

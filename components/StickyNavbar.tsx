@@ -232,7 +232,7 @@ export default function StickyNavbar() {
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.3 }}
-                className="md:hidden absolute top-full left-0 right-0 bg-card border-b border-zinc-200 dark:border-zinc-800 overflow-hidden"
+                className="md:hidden absolute top-full left-0 right-0 bg-white border-b border-zinc-200 rounded-3xl dark:border-zinc-800 overflow-hidden"
               >
                 <motion.ul className="px-4 py-2 space-y-2">
                   {SECTIONS.map((s) => (
