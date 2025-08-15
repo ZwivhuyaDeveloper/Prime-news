@@ -44,12 +44,18 @@ function ArticleList({ articles }: { articles: simpleNewsCard[] }) {
           className="group relative overflow-hidden rounded-xl border border-gray-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-gray-800 dark:bg-gray-900"
         >
           <div className="relative h-48 w-full">
-            <Image
-              src={urlFor(article.titleImage).url()}
-              alt={article.title}
-              fill
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
-            />
+            {article.titleImage ? (
+              <Image
+                src={urlFor(article.titleImage).url()}
+                alt={article.title}
+                fill
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center bg-gray-200 dark:bg-gray-800">
+                <span className="text-gray-500 dark:text-gray-400">No image available</span>
+              </div>
+            )}
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
               <Badge className="mb-2 bg-white/90 text-gray-900 hover:bg-white">
                 {article.categoryName}
@@ -130,12 +136,18 @@ export default async function TechnologyNews() {
             className="group relative overflow-hidden rounded-xl border border-gray-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-gray-800 dark:bg-gray-900"
           >
             <div className="relative h-48 w-full">
-              <Image
-                src={urlFor(post.titleImage).url()}
-                alt={post.title}
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-              />
+              {post.titleImage ? (
+                <Image
+                  src={urlFor(post.titleImage).url()}
+                  alt={post.title}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center bg-gray-200 dark:bg-gray-800">
+                  <span className="text-gray-500 dark:text-gray-400">No image available</span>
+                </div>
+              )}
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
                 <Badge className="mb-2 bg-white/90 text-gray-900 hover:bg-white">
                   {post.categoryName}

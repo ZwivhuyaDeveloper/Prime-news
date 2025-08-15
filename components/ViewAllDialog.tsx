@@ -35,16 +35,13 @@ export function ViewAllDialog({
       </Button>
       
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-6xl overflow-hidden rounded-2xl p-0">
+        <DialogContent className="max-w-4xl overflow-hidden rounded-2xl p-0 bg-white dark:bg-gray-900">
           <div className="relative">
-            {/* Header with gradient background */}
-            <div className="sticky top-0 z-10 bg-gradient-to-r from-orange-500 to-pink-500 p-6 text-white">
+            {/* Header */}
+            <div className="sticky top-0 z-10 border-b border-gray-200 bg-white dark:bg-gray-900 dark:border-gray-800 px-6 py-4">
               <div className="flex items-center justify-between">
-                <DialogHeader className="space-y-1">
-                  <span className="text-sm font-medium uppercase tracking-wider text-orange-100">
-                    Latest Updates
-                  </span>
-                  <DialogTitle className="text-3xl font-bold tracking-tight text-white">
+                <DialogHeader className="space-y-0 p-0">
+                  <DialogTitle className="text-xl font-semibold text-gray-900 dark:text-white">
                     {category} News
                   </DialogTitle>
                 </DialogHeader>
@@ -52,30 +49,44 @@ export function ViewAllDialog({
                   onClick={() => setOpen(false)}
                   variant="ghost"
                   size="icon"
-                  className="rounded-full bg-white/10 text-white hover:bg-white/20 hover:text-white focus:outline-none focus:ring-2 focus:ring-white/50"
+                  className="h-8 w-8 rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
                 >
-                  <X className="h-5 w-5" />
+                  <X className="h-4 w-4" />
                   <span className="sr-only">Close</span>
                 </Button>
               </div>
+              
+              <div className="mt-3 flex items-center">
+                <span className="text-sm text-gray-500 dark:text-gray-400">
+                  {React.Children.count(children)} articles
+                </span>
+                <div className="mx-3 h-4 w-px bg-gray-200 dark:bg-gray-700"></div>
+                <div className="text-sm text-gray-500 dark:text-gray-400">
+                  Updated {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                </div>
+              </div>
             </div>
 
-            {/* Content area with custom scrollbar */}
-            <div className="max-h-[70vh] overflow-y-auto p-6">
-              <div className="space-y-6">
+            {/* Content area */}
+            <div className="max-h-[70vh] overflow-y-auto">
+              <div className="divide-y divide-gray-200 dark:divide-gray-800">
                 {children}
               </div>
-              
-              {/* Footer */}
-              <div className="sticky bottom-0 bg-gradient-to-t from-white to-white/80 px-6 py-4 backdrop-blur-sm dark:from-gray-900 dark:to-gray-900/80">
-                <div className="flex justify-end">
-                  <Button
-                    onClick={() => setOpen(false)}
-                    className="bg-orange-500 text-white hover:bg-orange-600 focus:ring-orange-500"
-                  >
-                    Close
-                  </Button>
+            </div>
+            
+            {/* Footer */}
+            <div className="sticky bottom-0 border-t border-gray-200 bg-white px-6 py-3 dark:border-gray-800 dark:bg-gray-900">
+              <div className="flex items-center justify-between">
+                <div className="text-sm text-gray-500 dark:text-gray-400">
+                  Showing all {React.Children.count(children)} articles
                 </div>
+                <Button
+                  onClick={() => setOpen(false)}
+                  variant="outline"
+                  className="border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
+                >
+                  Close
+                </Button>
               </div>
             </div>
           </div>
