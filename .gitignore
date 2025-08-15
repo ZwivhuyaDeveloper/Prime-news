@@ -43,3 +43,6 @@ next-env.d.ts
 sanity.cli.ts
 node_modules
 .env
+
+# clerk configuration (can include secrets)
+/.clerk/

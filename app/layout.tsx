@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Playfair_Display, Inter } from "next/font/google";
+import { ClerkProvider } from "@clerk/nextjs";
+import GlobalStyles from "@/components/GlobalStyles";
 
 const display = Playfair_Display({ subsets: ["latin"], weight: ["400", "600", "700", "800"], variable: "--font-display" });
 const inter = Inter({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700", "800"], variable: "--font-sans" });
@@ -34,8 +36,13 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className={`${display.variable} ${inter.variable} font-sans antialiased`}>{children}</body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body className={`${display.variable} ${inter.variable} font-sans antialiased`}>
+          <GlobalStyles />
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

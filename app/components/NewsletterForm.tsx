@@ -35,7 +35,7 @@ export default function NewsletterForm() {
         className="h-11"
         required
       />
-      <Button type="submit" variant="brand" size="lg" disabled={loading}>
+      <Button type="submit" className="brand" variant="default" size="lg" disabled={loading}>
         {loading ? "Joining…" : "Join Newsletter"}
       </Button>
       {msg && <p className="text-sm text-muted-foreground">{msg}</p>}

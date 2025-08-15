@@ -1,118 +1,101 @@
-"use client";
-
-import { CategorySection } from "@/components/CategorySection";
-import { Button } from "@/components/ui/button";
-import { useNews } from "@/hooks/useNews";
-import { Skeleton } from "@/components/ui/skeleton";
-import Image from "next/image";
+import StickyNavbar from "@/components/StickyNavbar";
 import NewsletterForm from "./components/NewsletterForm";
-import StickyNavbar from "./components/StickyNavbar";
-
-function LoadingSkeleton() {
-  return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {[...Array(3)].map((_, i) => (
-        <div key={i} className="space-y-4">
-          <Skeleton className="aspect-[16/9] w-full rounded-lg" />
-          <div className="space-y-2">
-            <Skeleton className="h-4 w-3/4" />
-            <Skeleton className="h-4 w-1/2" />
-            <Skeleton className="h-3 w-1/4" />
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
+import FeaturedNews from "./components/layout/featured-section";
+import PoliticsNews from "./components/layout/politics-section";
+import BreakingNews from "./components/layout/breaking-section";
+import TechnologyNews from "./components/layout/technology-section";
+import BusinessNews from "./components/layout/business-section";
+import { SectionHeader } from "@/components/SectionHeader";
+import { AnimatedText } from './components/AnimatedHeading';
 
 export default function Page() {
-  const { categorySections, loading, error } = useNews();
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-destructive mb-2">Error Loading News</h2>
-          <p className="text-muted-foreground">{error}</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-background">
       <StickyNavbar />
-
-      <header id="hero" className="pt-28">
-        <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="relative overflow-hidden rounded-2xl border">
-            <Image
-              src="/images/hero.jpg"
-              width={1920}
-              height={1080}
-              alt="Flux Gazette hero image, editorial collage with gradient glow"
-              className="h-[52vh] w-full object-cover sm:h-[64vh]"
+      
+      <section id="hero" className="relative pt-32 justify-center pb-16 sm:pt-40 sm:pb-24">
+        <div className="absolute inset-0 -z-10 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-orange-50 to-transparent dark:from-gray-900/80 dark:to-gray-900" />
+        </div>
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mb-5">
+          <div className="text-center">
+            <AnimatedText 
+              as="h1"
+              text="Global News Network"
+              className="bg-gradient-to-r from-orange-500 to-pink-600 bg-clip-text text-4xl font-extrabold tracking-tight text-transparent sm:text-5xl md:text-6xl block"
             />
-            <div className="absolute inset-0 bg-gradient-brand opacity-30" />
-            <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/30 to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-10">
-              <h1 className="font-display text-4xl font-extrabold tracking-tight text-gradient-brand sm:text-5xl md:text-6xl">
-                Flux Gazette
-              </h1>
-              <p className="mt-3 max-w-2xl text-base text-muted-foreground sm:text-lg">
-                A modern digital magazine covering breaking news, politics, technology, sports, entertainment, business, health, and opinion.
-              </p>
-              <div className="mt-6 flex flex-wrap gap-3">
-                <a href="#news-sections"><Button variant="brand" size="lg">Read Latest</Button></a>
-                <a href="#contact" className="inline-flex"><Button variant="outline" size="lg">Subscribe</Button></a>
-              </div>
-            </div>
+            <AnimatedText 
+              as="p"
+              text="Stay informed with the latest breaking news, politics, technology, and business updates from around the world."
+              className="mx-auto mt-6 max-w-2xl text-lg text-gray-600 dark:text-gray-300"
+              delay={100}
+            />
+          </div>
+        </div>
+        <div className="container max-w-5xl mx-auto px-4">
+            <FeaturedNews/>
+        </div>
+      </section>
+      
+
+      <main className="relative z-10">
+        {/* Breaking News */}
+        <section id="breaking" className="scroll-mt-16 bg-white py-16 dark:bg-gray-900 sm:py-20">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <BreakingNews/>
           </div>
         </section>
-      </header>
 
-      <main id="news-sections">
-        {loading ? (
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
-            <div className="space-y-16">
-              {[...Array(3)].map((_, i) => (
-                <div key={i} className="space-y-6">
-                  <Skeleton className="h-8 w-48" />
-                  <LoadingSkeleton />
-                </div>
-              ))}
-            </div>
+        {/* Politics */}
+        <section id="politics" className="scroll-mt-16 bg-gray-50 py-16 dark:bg-gray-800/30 sm:py-20">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <SectionHeader 
+              title="Politics" 
+              description="Latest political developments and analysis" 
+              accentColor="from-blue-500 to-cyan-500"
+            />
+            <PoliticsNews/>
           </div>
-        ) : (
-          <>
-            {categorySections.map((section, index) => (
-              <CategorySection
-                key={section.category}
-                title={section.category}
-                articles={section.articles}
-                sectionId={section.category.toLowerCase().replace(/\s+/g, '-')}
-              />
-            ))}
-            
-            {categorySections.length === 0 && (
-              <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 text-center">
-                <h2 className="text-2xl font-bold mb-4">No Articles Found</h2>
-                <p className="text-muted-foreground">
-                  It looks like there are no published articles yet. Check back later!
-                </p>
-              </div>
-            )}
-          </>
-        )}
+        </section>
 
-        {/* Contact / Newsletter */}
-        <section id="contact" className="scroll-mt-24">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
-            <div className="relative overflow-hidden rounded-2xl border p-10 text-center">
-              <div className="absolute inset-0 -z-10 bg-gradient-brand opacity-[0.15]" />
-              <h2 className="font-display text-3xl font-bold">Stay in the loop</h2>
-              <p className="mx-auto mt-2 max-w-2xl text-muted-foreground">Get the weekly Flux Gazette digest: the stories that matter, delivered to your inbox.</p>
-              <div className="mx-auto mt-6 flex justify-center"><NewsletterForm /></div>
+        {/* Technology */}
+        <section id="technology" className="scroll-mt-16 bg-white py-16 dark:bg-gray-900 sm:py-20">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <SectionHeader 
+              title="Technology" 
+              description="Cutting-edge innovations and tech news"
+              accentColor="from-purple-500 to-indigo-600"
+            />
+            <TechnologyNews/>
+          </div>
+        </section>
+
+        {/* Business */}
+        <section id="business" className="scroll-mt-16 bg-gray-50 py-16 dark:bg-gray-800/30 sm:py-20">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <SectionHeader 
+              title="Business" 
+              description="Financial markets and corporate updates"
+              accentColor="from-emerald-500 to-teal-600"
+            />
+            <BusinessNews/>
+          </div>
+        </section>
+
+        {/* Newsletter */}
+        <section id="newsletter" className="relative scroll-mt-16 overflow-hidden bg-gradient-to-r from-orange-500 to-pink-600 py-16 sm:py-20">
+          <div className="absolute inset-0 -z-10 bg-[url('/images/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
+          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-2xl text-center">
+              <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                Stay in the loop
+              </h2>
+              <p className="mx-auto mt-4 max-w-xl text-lg leading-8 text-orange-100">
+                Get the weekly Flux Gazette digest: the stories that matter, delivered to your inbox.
+              </p>
+              <div className="mt-8 flex justify-center">
+                <NewsletterForm />
+              </div>
             </div>
           </div>
         </section>
