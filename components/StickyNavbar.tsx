@@ -139,18 +139,19 @@ export default function StickyNavbar() {
                 animate={{ scale: 1, rotate: 0 }}
                 transition={{ type: 'spring', stiffness: 260, damping: 20, delay: 0.3 }}
               >
-                <Newspaper 
-                  width={28} 
-                  height={28} 
-                  strokeWidth={2}
-                  className="bg-gradient-to-l w-fit h-fit from-orange-500 to-orange-200 rounded-full overflow-hidden text-white p-1"
-                />
+                <div className="bg-gradient-to-l  sm:w-10 w-8 flex sm:h-10 h-8 justify-center items-center from-orange-500 to-orange-200 rounded-full overflow-hidden text-white p-2">
+                  <Newspaper 
+                    width={20} 
+                    height={20} 
+                    strokeWidth={2}
+                  />
+                </div>
               </motion.div>
               <motion.span 
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.4 }}
-                className="font-bold text-xs sm:text-lg w-full gap-1 flex flex-row"
+                className="font-bold text-sm sm:text-lg w-full gap-1 flex flex-row"
               >
                 <motion.h1 
                   className="text-orange-500"

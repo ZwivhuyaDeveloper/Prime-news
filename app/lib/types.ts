@@ -35,24 +35,62 @@ export interface Impact {
   color: string;
 }
 
+interface SanityImage {
+  _type: 'image';
+  asset: {
+    _ref: string;
+    _type: 'reference';
+  };
+  alt?: string;
+  crop?: {
+    _type: 'sanity.imageCrop';
+    bottom: number;
+    left: number;
+    right: number;
+    top: number;
+  };
+  hotspot?: {
+    _type: 'sanity.imageHotspot';
+    height: number;
+    width: number;
+    x: number;
+    y: number;
+  };
+}
+
+type PortableTextBlock = {
+  _key: string;
+  _type: 'block' | 'image' | 'code' | 'table' | 'video' | 'file';
+  [key: string]: unknown;
+};
+
+type ResearchItem = {
+  _key: string;
+  _type: 'researchItem';
+  title: string;
+  url: string;
+  source?: string;
+  date?: string;
+};
+
 export interface NewsArticle {
   _id: string;
   title: string;
   slug: {
     current: string;
   };
-  titleImage?: any;
-  headImage?: any;
-  contentImage?: any;
+  titleImage?: SanityImage;
+  headImage?: SanityImage;
+  contentImage?: SanityImage;
   publishedAt: string;
   smallDescription: string;
-  content?: any[];
+  content?: PortableTextBlock[];
   keyPoints?: Array<{
     _key: string;
     point: string;
     description?: string;
   }>;
-  research?: any[];
+  research?: ResearchItem[];
   category: Category;
   author: Author;
   tags: Tag[];

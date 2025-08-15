@@ -5,6 +5,11 @@ import { PortableText } from "@portabletext/react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
+type Props = {
+  params: { slug: string }
+  searchParams: { [key: string]: string | string[] | undefined }
+}
+
 export const revalidate = 30; // Revalidate every 30 seconds
 
 interface NewsArticle {
@@ -20,11 +25,7 @@ interface NewsArticle {
   categoryName: string;
 }
 
-export default async function NewsArticle({
-  params,
-}: {
-  params: { slug: string };
-}) {
+export default async function NewsArticle({ params }: Props) {
   const query = `
     *[_type == 'news' && slug.current == $slug][0] {
       title,
